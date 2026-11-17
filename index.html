@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>刺青作品集測試網站架構</title><style>
+:root{--bg:#0c0c0e;--surface:#141418;--card:#1a1a20;--gold:#c9a063;--text:#f4f4f6;--muted:#9ca3af;--border:rgba(201,160,99,.25)}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI','Microsoft JhengHei',sans-serif;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+header{position:sticky;top:0;z-index:99;background:rgba(12,12,14,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:14px 5%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.logo{font-size:1.25rem;font-weight:800;letter-spacing:1.5px;color:#fff;cursor:pointer}.logo span{color:var(--gold);font-size:.82rem;margin-left:8px;font-weight:700}
+.nav-cats{display:flex;gap:4px;flex-wrap:wrap}.cat-btn{background:transparent;border:none;color:var(--muted);font-size:.92rem;font-weight:700;padding:6px 14px;border-radius:99px;cursor:pointer;transition:.2s}.cat-btn:hover,.cat-btn.active{background:var(--gold);color:#000}
+.btn-gold{background:var(--gold);color:#000;padding:9px 20px;border-radius:99px;font-weight:800;font-size:.88rem;border:none;text-decoration:none;cursor:pointer;display:inline-block}
+.hero{position:relative;overflow:hidden;min-height:74vh;display:flex;align-items:center;padding:60px 8%;background:linear-gradient(90deg,rgba(12,12,14,.96) 0%,rgba(12,12,14,.62) 55%,rgba(12,12,14,.2) 100%),url('tattoo_08.png') center 88%/cover no-repeat;border-bottom:1px solid var(--border)}
+.hero::before{content:'';position:absolute;inset:-20%;pointer-events:none;z-index:1;background:linear-gradient(135deg,rgba(255,228,181,.28) 0%,rgba(201,160,99,.14) 24%,rgba(201,160,99,.03) 48%,transparent 72%);animation:sunBeam 6s ease-in-out infinite alternate}
+.hero>div{position:relative;z-index:2}@keyframes sunBeam{0%{opacity:.72;transform:translate(-2%,-2%) scale(1)}100%{opacity:1;transform:translate(2%,2%) scale(1.04)}}
+.hero h1{font-size:2.55rem;font-weight:900;line-height:1.25;margin:10px 0 16px}.hero p{color:#d1d5db;max-width:520px;margin-bottom:26px}
+.wrap{max-width:1180px;margin:60px auto;padding:0 6%}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:22px;margin-bottom:60px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:.3s;cursor:pointer}.card:hover{transform:translateY(-5px);border-color:var(--gold)}
+.img-wrap{height:310px;overflow:hidden;position:relative;background:#000}.img-wrap img{width:100%;height:100%;object-fit:cover;transform:scale(1.15);transition:.4s}.card:hover .img-wrap img{transform:scale(1.22)}
+.pad{padding:18px}.tag{color:var(--gold);font-size:.75rem;font-weight:800;letter-spacing:1px;display:block}.card h3{font-size:1.1rem;margin:4px 0}.card p{color:var(--muted);font-size:.86rem}
+#detailView{display:none;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:60px}
+.back-btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:6px 16px;border-radius:99px;font-weight:700;font-size:.86rem;cursor:pointer;margin-bottom:22px;display:inline-block}.back-btn:hover{background:var(--gold);color:#000}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:32px;align-items:center}
+.zoom-box{position:relative;height:420px;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:#000;cursor:zoom-in;touch-action:none}
+.zoom-box img{width:100%;height:100%;object-fit:cover;transform-origin:center center;transition:transform .12s ease-out;user-select:none}
+.zoom-badge{position:absolute;bottom:12px;right:12px;background:rgba(12,12,14,.85);color:var(--gold);padding:5px 12px;border-radius:8px;font-size:.78rem;font-weight:700;pointer-events:none}
+.ctrl-bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;justify-content:center}.ctrl-btn{background:#1f1f26;border:1px solid var(--border);color:#f4f4f6;padding:7px 13px;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer}.ctrl-btn:hover,.ctrl-btn:active{background:var(--gold);color:#000}
+.tip-box{margin-top:18px;padding:14px 16px;background:rgba(201,160,99,.08);border-left:3px solid var(--gold);border-radius:8px;font-size:.88rem;color:#e5e7eb}
+.book{background:var(--surface);border:1px solid var(--gold);border-radius:18px;padding:34px;max-width:740px;margin:0 auto 50px}.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:20px 0}.fg label{display:block;color:var(--gold);font-size:.85rem;font-weight:700;margin-bottom:4px}
+input,select,textarea{width:100%;background:#0c0c0e;color:#fff;border:1px solid #3f3f46;padding:10px;border-radius:8px;font-size:.95rem}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:999;align-items:center;justify-content:center;cursor:zoom-out}.modal.open{display:flex}.modal img{max-width:92vw;max-height:86vh;border:1px solid var(--gold);border-radius:8px}
+footer{text-align:center;padding:30px;border-top:1px solid var(--border);color:var(--muted);font-size:.85rem}
+  .page-fade { animation: pageTurn 0.45s ease; }
+  @keyframes pageTurn { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
+  .studio-hero { border-radius: 18px; overflow: hidden; border: 1px solid var(--gold); margin-bottom: 32px; background: var(--card); box-shadow: 0 18px 45px rgba(0,0,0,0.65); }
+  .studio-hero img { width: 100%; max-height: 540px; object-fit: cover; display: block; cursor: zoom-in; }
+  .studio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; margin-bottom: 40px; }
+  .studio-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .studio-card h3 { color: var(--gold); font-size: 1.15rem; margin-bottom: 8px; }
+</style></head><body><header><div class="logo" onclick="closeDetail()">刺青作品集測試網站架構<span>DEMO TEMPLATE</span></div>
+<div class="nav-cats" id="nav"><button class="cat-btn active" onclick="f('all',this)">全部作品</button><button class="cat-btn" onclick="f('japan',this)">日式傳統</button><button class="cat-btn" onclick="f('neo',this)">新傳統</button><button class="cat-btn" onclick="f('western',this)">歐美</button><button class="cat-btn" onclick="f('realism',this)">寫實</button><button class="cat-btn" onclick="f('tribal',this)">圖騰</button><button class="cat-btn" onclick="showStudio(this)">工作室環境</button></div>
+<a href="#book" class="btn-gold">預約諮詢</a></header>
+<section class="hero"><div><span class="tag" style="letter-spacing:3px">WEB ARCHITECTURE DEMO</span><h1>將信仰與故事刻畫成<br>永恆的肌膚藝術</h1><p>全站響應式版型架構展示，涵蓋日式傳統、新傳統、歐美、寫實與圖騰五大經典分類，支援電腦 2.1 倍放大鏡與手機觸控旋轉檢視。</p><a href="#gal" class="btn-gold">瀏覽作品藝廊</a></div></section>
+<div class="wrap" id="gal"><div id="listView"><h2 style="text-align:center;margin-bottom:32px">精選刺青作品分類展示（點擊作品進入詳情檢視）</h2><div class="grid" id="grid">
+<div class="card" data-c="japan" onclick="openDetail('tattoo_08.png','日式傳統 ｜ JAPANESE TRADITIONAL','紅錦鯉與七彩蓮花花臂','深邃板霧襯托飽和紅錦鯉與漸層蓮花，展現傳統大圖包臂氣勢。','日式傳統','cover','center 85%')"><div class="img-wrap"><img src="tattoo_08.png" style="object-position:center 85%"></div><div class="pad"><span class="tag">日式傳統 ｜ JAPANESE TRADITIONAL</span><h3>紅錦鯉與七彩蓮花花臂</h3><p>深邃板霧襯托飽和紅錦鯉與漸層蓮花，展現傳統大圖包臂氣勢。</p></div></div>
+<div class="card" data-c="japan" onclick="openDetail('tattoo_07.png','日式傳統 ｜ FULL SLEEVE','傳統板霧雲浪與花臂側面構圖','順應手臂肌肉曲線延伸板霧浪花，視覺流動感與飽滿度極佳。','日式傳統','cover','center center')"><div class="img-wrap"><img src="tattoo_07.png"></div><div class="pad"><span class="tag">日式傳統 ｜ FULL SLEEVE</span><h3>傳統板霧雲浪與花臂側面構圖</h3><p>順應手臂肌肉曲線延伸板霧浪花，視覺流動感與飽滿度極佳。</p></div></div>
+<div class="card" data-c="neo" onclick="openDetail('tattoo_14.png','新傳統 ｜ NEO-TRADITIONAL','黑灰錦鯉與赤紅蓮花小腿大圖','黑灰底色中點綴高飽和赤紅蓮花，冷暖對比鮮明搶眼。','新傳統','cover','center center')"><div class="img-wrap"><img src="tattoo_14.png"></div><div class="pad"><span class="tag">新傳統 ｜ NEO-TRADITIONAL</span><h3>黑灰錦鯉與赤紅蓮花小腿大圖</h3><p>黑灰底色中點綴高飽和赤紅蓮花，冷暖對比鮮明搶眼。</p></div></div>
+<div class="card" data-c="neo" onclick="openDetail('tattoo_05.png','新傳統 ｜ NEO-TRADITIONAL','板霧浪濤與赤紅梵文咒字','融合傳統板霧層次與現代色彩漸層，莊嚴且具個人特色。','新傳統','cover','center center')"><div class="img-wrap"><img src="tattoo_05.png"></div><div class="pad"><span class="tag">新傳統 ｜ NEO-TRADITIONAL</span><h3>板霧浪濤與赤紅梵文咒字</h3><p>融合傳統板霧層次與現代色彩漸層，莊嚴且具個人特色。</p></div></div>
+<div class="card" data-c="western" onclick="openDetail('draft1.png','歐美與插畫手稿 ｜ CONCEPT ART','常山趙子龍・彩繪概念原畫','依客戶故事發想人物神韻與盔甲細節，建立視覺構圖基礎。','歐美','cover','center center')"><div class="img-wrap"><img src="draft1.png"></div><div class="pad"><span class="tag">歐美與插畫手稿 ｜ CONCEPT ART</span><h3>常山趙子龍・彩繪概念原畫</h3><p>依客戶故事發想人物神韻與盔甲細節，建立視覺構圖基礎。</p></div></div>
+<div class="card" data-c="realism" onclick="openDetail('tattoo_13.png','寫實風格 ｜ REALISM','常山趙子龍・長坂坡寫實小腿大圖','刻畫趙雲銀甲英姿與怒吼神情，下方結合長坂坡騎兵衝陣剪影。','寫實','cover','center center')"><div class="img-wrap"><img src="tattoo_13.png"></div><div class="pad"><span class="tag">寫實風格 ｜ REALISM</span><h3>常山趙子龍・長坂坡寫實小腿大圖</h3><p>刻畫趙雲銀甲英姿與怒吼神情，下方結合長坂坡騎兵衝陣剪影。</p></div></div>
+<div class="card" data-c="realism" onclick="openDetail('tattoo_01.png','寫實風格 ｜ BLACK & GREY','黑灰佛首雕塑光影素描','精準掌握灰階明暗過度，呈現如石雕般的立體視覺張力。','寫實','cover','center center')"><div class="img-wrap"><img src="tattoo_01.png"></div><div class="pad"><span class="tag">寫實風格 ｜ BLACK &amp; GREY</span><h3>黑灰佛首雕塑光影素描</h3><p>精準掌握灰階明暗過度，呈現如石雕般的立體視覺張力。</p></div></div>
+<div class="card" data-c="tribal" onclick="openDetail('draft2.png','客製設計手稿 ｜ TATTOO STENCIL','趙雲長坂坡單騎・黑白設計稿','將彩稿轉化為高對比黑白霧面設計稿，精準對應小腿肌理線條。','圖騰','contain','center center')"><div class="img-wrap"><img src="draft2.png" style="object-fit:contain;background:#fff;transform:scale(1)"></div><div class="pad"><span class="tag">客製設計手稿 ｜ TATTOO STENCIL</span><h3>趙雲長坂坡單騎・黑白設計稿</h3><p>將彩稿轉化為高對比黑白霧面設計稿，精準對應小腿肌理線條。</p></div></div>
+</div></div><div id="detailView"><button class="back-btn" onclick="closeDetail()">← 返回作品列表</button><div class="detail-grid"><div><div class="zoom-box" id="zoomBox" onclick="z(document.getElementById('dImg').src)"><img id="dImg" src=""><span class="zoom-badge">🔍 電腦滑鼠 2.1x 放大 / 手機單指滑動旋轉</span></div><div class="ctrl-bar"><button type="button" class="ctrl-btn" onclick="rotImg(-90)">↺ 左轉 90°</button><button type="button" class="ctrl-btn" onclick="rotImg(90)">↻ 右轉 90°</button><button type="button" class="ctrl-btn" onclick="toggleMobileZoom()">🔍 2.1x 放大切換</button><button type="button" class="ctrl-btn" onclick="resetImg()">⟲ 還原角度</button></div></div><div><span class="tag" id="dTag" style="margin-bottom:8px"></span><h2 id="dTitle" style="font-size:1.85rem;margin-bottom:12px"></h2><p id="dDesc" style="color:#d1d5db;font-size:1rem;margin-bottom:22px"></p><button class="btn-gold" id="dBookBtn">💬 諮詢此風格客製設計與報價</button><div class="tip-box">💡 <strong>跨裝置檢視提示：</strong><br>• <strong>電腦版：</strong>滑鼠移至左側作品上即可 <strong>2.1 倍局部放大</strong>，點擊可開全螢幕。<br>• <strong>手機版：</strong>可用<strong>單指左右滑動圖片自由旋轉角度</strong>，或使用下方按鈕旋轉與縮放！</div></div></div></div>
+  <div id="studioView" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:24px">
+      <div><span class="tag">STUDIO ENVIRONMENT</span><h2 style="font-size:1.95rem">工作室空間與無菌設備介紹</h2></div>
+      <button class="back-btn" style="margin:0" onclick="backToWorks()">← 翻回第一頁：作品藝廊</button>
+    </div>
+    <div class="studio-hero">
+      <img src="studio1.png" onclick="z('studio1.png')" alt="刺青工作室實景環境">
+      <div style="padding:26px">
+        <span class="tag">PRIVATE &amp; STERILE SPACE</span>
+        <h3 style="font-size:1.45rem;margin:6px 0 10px">暗夜藝廊風格・一對一獨立隱密施作空間</h3>
+        <p style="color:#d1d5db">打造如高級藝術畫廊般的沉穩氛圍，採用人體工學電動專業刺青椅、醫療級不鏽鋼無菌工作車與獨立預約制空間，讓每位客人都能在完全放鬆、不被打擾的環境中完成專屬作品。</p>
+      </div>
+    </div>
+    <div class="studio-grid">
+      <div class="studio-card"><h3>🛡️ 醫療級拋棄式無菌耗材</h3><p style="color:var(--muted);font-size:.92rem">全店堅持一人一針拋棄式無菌針具、色料杯與醫療級防護隔離膜，施作前後全面高壓滅菌與紫外線消毒。</p></div>
+      <div class="studio-card"><h3>🛋️ 專業人體工學刺青設備</h3><p style="color:var(--muted);font-size:.92rem">配備多角度可調式專業紋身躺椅與高顯色無影作業照明，大幅減輕長時間大圖施作的身體疲勞。</p></div>
+      <div class="studio-card"><h3>🎨 獨立一對一客製設計討論區</h3><p style="color:var(--muted);font-size:.92rem">提供專屬手稿討論吧台與數位模擬對位服務，確保圖案比例與身體肌肉線條完美契合後才動針。</p></div>
+    </div>
+  </div>
+  <div class="book" id="book"><span class="tag">CONSULTATION</span><h2 style="margin:6px 0">預約一對一客製設計討論</h2><div class="fg"><div><label>您的稱呼 *</label><input id="n" placeholder="請輸入稱呼"></div><div><label>聯絡電話或 LINE ID *</label><input id="ph" placeholder="請輸入聯絡電話或 LINE"></div><div><label>希望刺青部位 *</label><input id="pt" placeholder="例如：全臂包手、小腿外側、前臂"></div><div><label>預計尺寸大小 *</label><select id="sz"><option>10x10 cm 左右（掌心大小）</option><option>15x25 cm 以上（小腿／半臂大圖）</option><option>全臂／全背大型構圖</option></select></div><div><label>偏好刺青風格 *</label><select id="st"><option>日式傳統</option><option>新傳統</option><option>歐美</option><option>寫實</option><option>圖騰</option></select></div></div><div style="margin-bottom:16px"><label style="display:block;color:var(--gold);font-size:.85rem;font-weight:700;margin-bottom:4px">想法與元素描述</label><textarea id="nt" rows="3" placeholder="簡述想融入的元素或風格想法"></textarea></div>        <button class="btn-gold" style="width:100%;padding:13px;font-size:1rem" onclick="send()">確認送出刺青預約</button>
+  </div></div>
+<footer>刺青作品集測試網站架構 ｜ 響應式網頁版型展示 ｜ 💬 諮詢 LINE ID：lin751129</footer><div class="modal" id="m" onclick="this.classList.remove('open')"><img id="mp"></div>
+<script>
+let curRot=0,curScale=1;function applyTransform(){document.getElementById('dImg').style.transform='rotate('+curRot+'deg) scale('+curScale+')'}
+function rotImg(d){curRot=(curRot+d)%360;document.getElementById('dImg').style.transformOrigin='center center';applyTransform()}
+function toggleMobileZoom(){curScale=(curScale===1)?2.1:1;document.getElementById('dImg').style.transformOrigin='center center';applyTransform()}
+function resetImg(){curRot=0;curScale=1;document.getElementById('dImg').style.transformOrigin='center center';applyTransform()}
+  function showStudio(btn) {
+    document.querySelectorAll('#nav button').forEach(x => x.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.getElementById('listView').style.display = 'none';
+    document.getElementById('detailView').style.display = 'none';
+    const sv = document.getElementById('studioView');
+    sv.style.display = 'block';
+    sv.classList.remove('page-fade');
+    void sv.offsetWidth;
+    sv.classList.add('page-fade');
+    document.getElementById('gal').scrollIntoView({ behavior: 'smooth' });
+  }
+  function backToWorks() {
+    const firstBtn = document.querySelector('#nav button');
+    f('all', firstBtn);
+  }
+  function f(c, b) {
+    const sv = document.getElementById('studioView');
+    if (sv) sv.style.display = 'none';closeDetail();document.querySelectorAll('#nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('#grid .card').forEach(x=>x.style.display=(c==='all'||x.dataset.c===c)?'block':'none')}
+function openDetail(src,tag,title,desc,styleOpt,fit,pos){document.getElementById('listView').style.display='none';document.getElementById('detailView').style.display='block';const img=document.getElementById('dImg');img.src=src;img.style.objectFit=fit||'cover';img.style.objectPosition=pos||'center center';img.style.background=(fit==='contain')?'#fff':'#000';resetImg();document.getElementById('dTag').textContent=tag;document.getElementById('dTitle').textContent=title;document.getElementById('dDesc').textContent=desc;document.getElementById('dBookBtn').onclick=function(){document.getElementById('st').value=styleOpt;document.getElementById('nt').value='參考作品：'+title;document.getElementById('book').scrollIntoView({behavior:'smooth'})};document.getElementById('gal').scrollIntoView({behavior:'smooth'})}
+function closeDetail(){document.getElementById('detailView').style.display='none';document.getElementById('listView').style.display='block'}
+const zBox=document.getElementById('zoomBox'),dImg=document.getElementById('dImg');
+zBox.addEventListener('mousemove',function(e){if(curRot!==0)return;const r=zBox.getBoundingClientRect();dImg.style.transformOrigin=((e.clientX-r.left)/r.width)*100+'% '+((e.clientY-r.top)/r.height)*100+'%';dImg.style.transform='scale(2.1)'});
+zBox.addEventListener('mouseleave',function(){if(curRot!==0)return;dImg.style.transformOrigin='center center';dImg.style.transform='scale('+curScale+')'});
+let tsX=0,bR=0;zBox.addEventListener('touchstart',function(e){if(e.touches.length===1){tsX=e.touches[0].clientX;bR=curRot;dImg.style.transition='none'}},{passive:true});
+zBox.addEventListener('touchmove',function(e){if(e.touches.length===1){curRot=Math.round(bR+(e.touches[0].clientX-tsX)*0.6);dImg.style.transformOrigin='center center';applyTransform()}},{passive:true});
+zBox.addEventListener('touchend',function(){dImg.style.transition='transform .12s ease-out'});
+function z(s){document.getElementById('mp').src=s;document.getElementById('m').classList.add('open')}
+function send() {
+  const name = document.getElementById('n').value.trim();
+  const phone = document.getElementById('ph').value.trim();
+  const pt = document.getElementById('pt').value.trim();
+  if (!name || !phone || !pt) { alert('請填寫您的稱呼、聯絡方式與刺青部位！'); return; }
+  const sz = document.getElementById('sz').value;
+  const st = document.getElementById('st').value;
+  const nt = document.getElementById('nt').value.trim() || '現場討論';
+  const msg = '部位：' + pt + '｜風格：' + st + '｜尺寸：' + sz + '｜想法：' + nt;
+
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'http://192.168.0.32:5000/tattoo_book';
+  form.target = '_blank';
+
+  const fields = { name: name, phone: phone, service_type: '刺青客製預約', message: msg };
+  for (const key in fields) {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = key;
+    input.value = fields[key];
+    form.appendChild(input);
+  }
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+}
+</script></body></html>
